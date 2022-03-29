@@ -1,28 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './index.css'
+import { SearchPlaces } from "./places/SearchPlaces";
 
-const api = {
-  key: process.env.REACT_APP_API_KEY,
+const weatherApi = {
+  key: process.env.REACT_APP_WEATHER_API_KEY,
   URL: "https://api.openweathermap.org/data/2.5/"
 }
 
-
 function App() {
 
-  const [query, setQuery] = useState('')
+  const [city, setCity] = useState()
   const [weather, setWeather] = useState({})
 
-  const searchFunc = (evt) => {
-    if (evt.key === "Enter") {
-      fetch(`${api.URL}weather?q=${query}&units=metric&APPID=${api.key}`)
-      .then(response => response.json())
-      .then(result => {
-        setWeather(result)
-        setQuery('')
-        console.log(result)
-      })
-    }
-  }
+  useEffect(() => {
+    console.log(`${weatherApi.URL}weather?q=${city}&units=metric&APPID=${weatherApi.key}`)
+    fetch(`${weatherApi.URL}weather?q=${city}&units=metric&APPID=${weatherApi.key}`)
+    .then(response => response.json())
+    .then(result => {
+      setWeather(result)
+      console.log(result)
+    })
+  },[city])
 
   const dateBuilder = (d) => {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -39,16 +37,9 @@ function App() {
   return (
     <div className="app">
       <main>
-        <div className="search">
-          <input
-            className="search-bar"
-            type="text"
-            placeholder="Search"
-            onChange={e => setQuery(e.target.value)}
-            value={query}
-            onKeyPress={searchFunc}
-          />
-        </div>
+        <SearchPlaces
+          getCity={(city) => setCity(city)} 
+        />
         {(weather.main !== undefined) ? (
           <div>
             <div className="location-info">
@@ -56,7 +47,7 @@ function App() {
               <div className="date">{dateBuilder(new Date())}</div>
             </div>
             <div className="weather-info">
-              <div className="temperature">{Math.round(weather.main.temp)}</div>
+              <div className="temperature">{Math.round(weather.main.temp)}°C</div>
               <div className="weather">{weather.weather[0].main}</div>
             </div>
           </div>
@@ -65,5 +56,7 @@ function App() {
     </div>
   );
 }
+
+
 
 export default App;

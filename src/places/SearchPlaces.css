@@ -1,0 +1,32 @@
+form {
+    padding: 25px;
+  }
+  
+  .search-bar{
+    width: 100%;
+    margin: 0, 0, 50px, 0;
+  }
+  
+  .search .search-bar{
+    display: block;
+    width: 100%;
+    padding: 15px;
+  
+    appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+  
+    background-color: white;
+    border-radius: 0 0 15px 15px;
+    margin-top: -25px;
+    opacity:50%;
+  
+    transition: 0.4s ease;
+  }
+  
+  
+  .search .search-bar:focus{
+    background-color: white;
+    opacity:70%;
+  }
